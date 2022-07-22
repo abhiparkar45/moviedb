@@ -14,7 +14,7 @@ const Moviecard = (props) => {
         <div className="card-body">
           <h5 className="card-title">{movieName}</h5>
           <p className="card-text">
-            <h6>Rating:</h6>
+            Rating:
             {rating}
           </p>
         </div>

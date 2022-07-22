@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -46,19 +45,17 @@ const MovieDetails = (props) => {
 
   return (
     <>
-      <div class="div-container0">
-        <div class="div-left-container0">
-          <div class="div-left-top0">
-            <div class="div-small-container10">
+      <div className="div-container0">
+        <div className="div-left-container0">
+          <div className="div-left-top0">
+            <div className="div-small-container10">
               <img
-                width="256px"
-                height="312px"
                 src={`https://image.tmdb.org/t/p/w500/${movieDetail.poster_path}`}
                 alt="Image Not Found"
               ></img>
             </div>
-            <div class="div-info-container0">
-              <h1>{movieDetail.original_title}</h1>
+            <div className="div-info-container0">
+              <h3>{movieDetail.original_title}</h3>
               <p>
                 <b>Rating :{movieDetail.vote_average}</b>
               </p>
@@ -66,18 +63,24 @@ const MovieDetails = (props) => {
               <p>Release Date:{movieDetail.release_date}</p>
 
               <small>
-                {genre.map(() => {
-                  return <div key={genre.id}>{genre.name}</div>;
+                <b>Genre : </b>
+                {genre.map((element) => {
+                  return (
+                    <text style={{ color: "green" }} key={element.id}>
+                      {element.name}
+                      {"  "}
+                    </text>
+                  );
                 })}
               </small>
             </div>
           </div>
-          <div class="div-overview0">
-            Overview:
+          <div className="div-overview0">
+            <b>Overview:</b>
             <p>{movieDetail.overview}</p>
           </div>
         </div>
-        <div class="div-big-img-continer0">
+        <div className=".div-big-img-container0">
           <img
             src={`https://image.tmdb.org/t/p/w500/${movieDetail.backdrop_path}`}
             alt="MOM"
@@ -88,19 +91,20 @@ const MovieDetails = (props) => {
       </div>
       <hr />
       <main>
-        <Box component="span" sx={{ display: "block" }}>
-          <center>
-            {" "}
-            <h1 style={{ color: "white" }}>Cast</h1>
-          </center>
-        </Box>
+        <Grid container>
+          <h1
+            className="cast-center"
+            style={{ color: "white", margin: "auto" }}
+          >
+            Cast
+          </h1>
+        </Grid>
         <Container sx={{ py: 6 }} maxWidth="lg">
-          <Grid container spacing={4}>
+          <Grid container>
             {currentCast.map((e) => {
               return (
-                <Grid item xs={2}>
+                <div key={e.castID} className="castcolumn">
                   <Card
-                    key={e.castID}
                     sx={{
                       height: "100%",
                       display: "flex",
@@ -123,31 +127,31 @@ const MovieDetails = (props) => {
                       </Typography>
                       <Typography>
                         <br></br>
-                        <h6>Character:</h6>
+                        Character:
                         {e.character}
                       </Typography>
                     </CardContent>
                   </Card>
-                </Grid>
+                </div>
               );
             })}
+            <Pagination
+              count={castPageCount}
+              color="secondary"
+              size="large"
+              variant="outlined"
+              defaultPage={currentCastPage}
+              style={{
+                padding: 20,
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+              onChange={(event, value) => {
+                setCurrentCastPage(value);
+              }}
+            />
           </Grid>
-          <Pagination
-            count={castPageCount}
-            color="secondary"
-            size="large"
-            variant="outlined"
-            defaultPage={currentCastPage}
-            style={{
-              padding: 20,
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            onChange={(event, value) => {
-              setCurrentCastPage(value);
-            }}
-          />
         </Container>
       </main>
     </>

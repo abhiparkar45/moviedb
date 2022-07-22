@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 import Moviecard from "./Moviecard";
+import Grid from "@mui/material/Grid";
 import Pagination from "@material-ui/lab/Pagination";
-
-const theme = createTheme();
 
 const MovieSearchResults = (props) => {
   const navigate = useNavigate();
@@ -31,7 +26,6 @@ const MovieSearchResults = (props) => {
     let getSearchResult = await fetch(url);
     let parsedSearchResult = await getSearchResult.json();
     setSearchResult(parsedSearchResult.results);
-    console.log(searchResult);
   };
 
   useEffect(() => {
@@ -40,55 +34,44 @@ const MovieSearchResults = (props) => {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <main>
-          <Box
-            sx={{
-              bgcolor: "background.paper",
-              pt: 0,
-              pb: 6,
-            }}
-          ></Box>
-          <Container sx={{ py: 3 }} maxWidth="lg">
-            <Grid container spacing={4}>
-              {currentResults.map((e) => (
-                <Grid
-                  key={e.id}
-                  onClick={() => {
-                    navigate(`/movie/${e.id}`);
-                  }}
-                  item
-                  xs={4}
-                >
-                  <Moviecard
-                    movieID={e.id}
-                    movieName={e.original_title}
-                    rating={e.vote_average}
-                    posterUrl={e.poster_path}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </main>
-        <Pagination
-          count={resultCount}
-          color="secondary"
-          size="large"
-          variant="outlined"
-          defaultPage={currentSearchPage}
-          style={{
-            padding: 20,
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-          onChange={(event, value) => {
-            setCurrentSearchPage(value);
-          }}
-        />
-      </ThemeProvider>
+      <Container sx={{ py: 6 }} maxWidth="lg">
+        <Grid container spacing={4}>
+          <div className="resrow">
+            {currentResults.map((e) => (
+              <div
+                key={e.id}
+                onClick={() => {
+                  navigate(`/movie/${e.id}`);
+                }}
+                className="cardcolumn"
+              >
+                <Moviecard
+                  movieID={e.id}
+                  movieName={e.original_title}
+                  rating={e.vote_average}
+                  posterUrl={e.poster_path}
+                />
+              </div>
+            ))}
+          </div>
+        </Grid>
+      </Container>
+      <Pagination
+        count={resultCount}
+        color="secondary"
+        size="large"
+        variant="outlined"
+        defaultPage={currentSearchPage}
+        style={{
+          padding: 20,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+        onChange={(event, value) => {
+          setCurrentSearchPage(value);
+        }}
+      />
     </>
   );
 };
